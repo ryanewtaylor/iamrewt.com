@@ -1,0 +1,29 @@
+languageCode = "en-us"
+title = "i am rewt"
+baseurl = "https://iamrewt.com/"
+theme = "vienna"
+
+[permalinks]
+    post = "/:year/:month/:day/:slug"
+
+[params]
+    # social media
+    twitter = "ryanewtaylor"
+    github = "ryanewtaylor" 
+    stackoverflow = "19977"
+    
+    # Disqus shortname
+    # disqus = "Your disqus shortname"
+    
+    # Google Analytics API key.
+    # ga_api_key = "Your Google Analytics tracking id"
+    
+    # Mixpanel API key.
+    mixpanel_api_key = "Your Mixpanel API key"
+    author = "Ryan Taylor"
+    #avatar = "/path/to/avatar"
+    #contact = "Your contact link (ex. mailto:foo@example.com)"
+    bio = "Software Developer"
+    
+    # Short subtitle/tagline. This is displayed in the header.
+    subtitle = "BOOYAKASHA!"
