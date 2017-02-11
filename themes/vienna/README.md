@@ -7,7 +7,8 @@ Notable features are:
 
 - Simple and clean design
 - Client side source code highlighting
-- Social links (Twitter, Facebook, GitHub, LinkedIn, Instagram, Keybase)
+- Social links (Twitter, Facebook, GitHub, LinkedIn, Google+, Instagram, Keybase)
+- Comments with Disqus
 - Support for tags
 - Analytics with Google Analytics or Mixpanel
 - Responsive design
@@ -61,6 +62,14 @@ copyright = "&copy; Copyright notice"
     # Short subtitle/tagline. This is displayed in the header.
     subtitle = "Short subtitle/tagline of your blog"
     themecolor = "#hexcolor" # Defines the tab color in Chrome for Android.
+```
+
+You may specify the following options in the front matter of your content to
+make use of this theme's features.
+
+```toml
+nocomments = true # Disables Disqus comments on this content
+nodate = true # Hides date in list and on content
 ```
 
 ## Usage
