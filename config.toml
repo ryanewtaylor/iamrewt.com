@@ -9,7 +9,7 @@ theme = "vienna"
 [params]
     # social media
     twitter = "ryanewtaylor"
-    github = "ryanewtaylor" 
+    github = "ryanewtaylor"
     stackoverflow = "19977"
     
     # Disqus shortname
@@ -26,4 +26,4 @@ theme = "vienna"
     bio = "Software Developer"
     
     # Short subtitle/tagline. This is displayed in the header.
-    subtitle = "BOOYAKASHA!"
+    subtitle = "Bah Weep Graaaaagnahh Wheep Ni Ni Bong"
