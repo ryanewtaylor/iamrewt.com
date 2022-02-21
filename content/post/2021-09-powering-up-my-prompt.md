@@ -1,7 +1,7 @@
 ---
 title:
   "Powering Up My Prompt with Windows Terminal, PowerShell Core, Git, OpenSSH,
-  Posh-Git, and Oh-My-Posh"
+  Posh-Git, and Oh My Posh"
 date: 2021-09-04T14:52:51-04:00
 tags:
   - git
@@ -13,45 +13,41 @@ tags:
 #thumbnailImage: //example.com/image.jpg
 ---
 
-I'm currently setting up a new dev environment and since I haven't posted
-anything to this space in **four years** I thought an update on how I pumped up
-my PowerShell prompt would be a decent re-introduction to blogging. After all,
-Setting Up Git and SSH in PowerShell with posh-git was my first post to this
-site!
+I'm currently setting up a new dev environment - and since I haven't posted
+anything to this space in **four years** - an update on how I set up my
+PowerShell prompt would be a decent re-introduction to blogging. After all,
+[Setting Up Git and SSH in PowerShell with posh-git][first-post] was my first
+blog post!
 
 Here's a look at my finished terminal.
 
-![](https://picsum.photos/200/300)
+![Windows Terminal with Oh My Posh](/images/powered-up-terminal.png)
 
 <!--more-->
 
 ## Prerequisites
 
-- [Windows 10 Version 1809 (Fall 2018 Update)][openssh] or Better
+- Windows 10 Version 20H2 or higher
 
-I am starting from scratch with just Windows 10 Version 20H2 and little else
-installed. If you (or future me) wishes to follow along you'll need at least
-Windows 10 1809 as it comes with OpenSSH which we'll be using with Git.
+I am starting from scratch with Windows 10 Version 20H2 and little else
+installed. Earlier versions may work but you'll need at least Windows 10 1903
+for [Windows Terminal][windows-terminal]. [OpenSSH][openssh], my preferred
+approach for authentication with GitHub, is preinstalled with Windows 10 1809.
 
 ## Install Chocolatey and Scoop
 
-I'll be using Chocolately and Scoop to install many of my desired components.
-From an Administrative PowerShell window run the following.
+I'll be using Chocolately and Scoop to install everything so I need to install
+those first. From an Administrative PowerShell prompt I run the following.
 
 ```powershell
-# allow us to run scripts
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-# install chocolately
 iex (New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')
-
-# install scoop
 iex (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 ```
 
-## Install Windows Terminal, PowerShell Core, Git, Posh-Git, et al
+## Install Windows Terminal, PowerShell Core, and Git
 
-Using Chocolately I now install Windows Terminal, PowerShell Core, and Git using
+With Chocolately I now install Windows Terminal, PowerShell Core, and Git using
 the same Administrative PowerShell prompt as before.
 
 ```powershell
@@ -60,130 +56,127 @@ choco install microsoft-windows-terminal -y
 choco install git --params "/GitOnlyOnPath /NoShellIntegration" -y
 ```
 
-Now I use Scoop to install posh-git, oh-my-posh, and Cascadia Code Nerd Fonts as
-Chocolatey has outdated versions of these (or is missing them altogether).
+Alternatively, I could have installed Windows Terminal and Git with scoop. I
+just went with what I am familiar with in this case. PowerShell Core is not
+available via Scoop at this time.
+
+## Install Posh-Git, Oh My Posh, and Cascadia Code Nerd Fonts
+
+With Scoop I now install posh-git, Oh My Posh, and Cascadia Code Nerd Fonts. I
+use Scoop because Chocolatey has outdated versions of these packages (or is
+missing them altogether).
 
 ```powershell
 scoop bucket add extras
 scoop install posh-git
-scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
 
 scoop bucket add nerd-fonts
 scoop install CascadiaCode-NF
+
+scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
 ```
 
-## Import Posh-Git Into PowerShell
+## Configure Git
 
-The official instructions using `Add-PoshGitToProfile` did not work in my
-experience. My profile was modified but upon opening a new PowerShell session I
-received the following error:
+Next up is configuring git. This includes setting my global username and email,
+creating an ssh key, adding the public key to my Github account, adding the
+private key to the ssh agent, and instructing git to use the Open SSH client
+built in to Windows 10.
 
-```cmd
- The specified module 'posh-git' was not loaded because no valid module file
- was found in any module directory.
+For the rest of the setup I use the newly installed PowerShell Core and Windows
+Terminal for any command line instructions.
+
+### Set Global Username and Email
+
+I run the following to set my global git username and email.
+
+```powershell
+git config --global user.name "Ryan Taylor"
+git config --global user.email "myEmail@example.com"
 ```
 
-I resolved this by manually editing my PowerShell Profile.
+```powershell
+git config --global init.defaultBranch main
+```
 
-</br></br>
-
-1. Open Windows Terminal
-2. Open PowerShell Core (if not the default)
-3. Open your PowerShell Profile for editing
-
-   ```powershell
-   code $PROFILE.CurrentUserCurrentHost
-   ```
-
-4. Add (or modify) the posh-git import statement as shown below
-
-   ```powershell
-   Import-Module ~\scoop\modules\posh-git\posh-git.psd1
-   ```
-
-5. Save changes and restart Windows Terminal
-
-## Create an SSH Key
+### Create an SSH Key
 
 To create my SSH key I followed Github's [Generating a new SSH
-key][github-new-ssh] instructions, though I substituted PowerShell for Git Bash.
+key][github-new-ssh] instructions with one exception; I used PowerShell Core
+instead of Git Bash.
 
-1. Open PowerShell Core
-
-2. Run the following to create the key (be sure to replace the email)
+1. In PowerShell Core, run the following
 
    ```powershell
    ssh-keygen -t ed25519 -C "myEmail@example.com"
    ```
 
-3. Hit enter to accept the default location and filename
+2. Hit enter to accept the default location and filename
 
    ```cmd
    Generating public/private ed25519 key pair.
-   Enter file in which to save the key (C:\Users\me\.ssh\id_ed25519):
+   Enter file in which to save the key (C:\Users\ryan\.ssh\id_ed25519):
    ```
 
-4. Enter a password for the ssh key (do this twice)
+3. Enter a password for the ssh key (do this twice)
 
    ```cmd
-   Enter passphrase (empty for no passphrase): [super secure password]
-   Enter same passphrase again: [super secure password]
+   Enter passphrase (empty for no passphrase): [my secure password]
+   Enter same passphrase again: [my secure password]
    ```
 
-5. I now have a private and public key in my user's .ssh directory
+4. I now have a private and public key in my user's .ssh directory
 
    ```cmd
-   Your public key has been saved in C:\Users\me\.ssh\id_ed25519.pub.
+   Your public key has been saved in C:\Users\ryan\.ssh\id_ed25519.pub.
    ```
 
    The output also displays information about the newly created key such as the
    key fingerprint and the key's randomart image (not shown above)
 
-## Add the Public Key to Github
+### Add the Public Key to Github
 
 To add my SSH key to my Github account I followed Github's [Adding a new SSH key
-to your GitHub account][github-add-ssh] instructions, substituting PowerShell
-for Git Bash.
+to your GitHub account][github-add-ssh] instructions, again using PowerShell
+Core instead of Git Bash.
 
-1. Open PowerShell Core
-2. Copy the public key to the clipboard by running
+1. Copy the public key to the clipboard
 
    ```powershell
    Get-Content ~/.ssh/id_ed25519.pub | Set-Clipboard
    ```
 
-3. Navigate to https://github.com/settings/keys
-4. Click `New SSH Key`
-5. Enter a useful title for the title field
-6. Paste the public key into the key field
-7. Click "Add SSH Key"
-8. Enter my password to confirm access
+2. Open https://github.com/settings/keys
+3. Click `New SSH Key`
+4. Enter a useful title for the title field
+5. Paste the public key into the key field
+6. Click "Add SSH Key"
+7. Enter my password to confirm access and complete the process
 
-## Add the Private Key to the SSH Agent
+### Add the Private Key to the SSH Agent
 
 Next I add my Private SSH key to the SSH Agent so I am not prompted for my
-password with each git fetch, pull, or push.
+password with each git fetch, pull, or push. In PowerShell Core...
 
-1. Open PowerShell Core
-2. Configure the SSH Agent to start automatically when Windows is started
+1. Set the SSH Agent startup type to automatic
 
    ```powershell
    Set-Service -Name ssh-agent -StartupType Automatic
    ```
 
-3. Start the SSH Agent
+2. Start the SSH Agent
 
    ```powershell
    Start-Service -Name ssh-agent
    ```
 
-4. Add the private ssh key to the agent
+3. Add the private ssh key to the agent
 
    ```cmd
    ssh-add (Resolve-Path ~\.ssh\id_ed25519)
    ```
 
-5. When prompted enter the password for the key
+4. When prompted enter the password
 
    ```cmd
    Enter passphrase for C:\Users\me\.ssh\id_ed25519: [super secure password]
@@ -195,25 +188,50 @@ password with each git fetch, pull, or push.
    Identity added: C:\Users\me\.ssh\id_ed25519 (myEmail@example.com)
    ```
 
-## Instruct Git to Use Open SSH
+### Tell Git Where to Find Open SSH
 
-Because I did not use the ssh libraries included with Git Bash I needed to tell
-Git where to find the built in Windows SSH executable. This is done by creating
-a GIT_SSH environment variable containing the path to ssh.exe.
+Because I'm using the built in ssh client rather than those that come with git
+bash I need to tell git where to find the ssh.exe included with Windows 10. This
+is done by creating a GIT_SSH environment variable containing the path to
+ssh.exe. Once again in PowerShell Core...
 
-1. Open PowerShell Core
-
-2. Create the `GIT_SSH` environment variable
+1. Create the `GIT_SSH` environment variable
 
    ```powershell
    $env:GIT_SSH = Get-Command ssh | Select-Object -ExpandProperty Source
    ```
 
-3. Restart your terminal
+2. Restart your terminal
 
-## Configure Oh-My-Posh
+## Configure Posh-Git
 
-1. Set Windows Temrinal default font to
+I use posh-git primarily for the tab completion of git commands, remote names,
+and branch names. I'll leave displaying git status information in the prompt to
+Oh My Posh. As such I only need to import posh-git into PowerShell with no
+further configuration.
+
+1. Open Windows Terminal
+2. Open PowerShell Core (if not the default)
+3. Open my PowerShell Profile
+
+   ```powershell
+   code $PROFILE
+   ```
+
+4. Add (or modify) the posh-git import statement as shown below
+
+   ```powershell
+   Import-Module ~\scoop\modules\posh-git\posh-git.psd1
+   ```
+
+5. Save changes and restart Windows Terminal
+
+## Configure Oh My Posh
+
+Almost there! To take my terminal to the next level I need only configure Oh My
+Posh.
+
+1. Set Windows Terminal default font to
 
    ```json
    "profiles": {
@@ -225,34 +243,33 @@ a GIT_SSH environment variable containing the path to ssh.exe.
    }
    ```
 
-2. Install Oh-My-Posh
-
-   ```powershell
-   scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
-   ```
-
-3. Edit PowerShell Profile
+2. Edit PowerShell Profile
 
    ```powershell
    oh-my-posh --init --shell pwsh --config "$(scoop prefix oh-my-posh)\themes\gmay.omp.json" | Invoke-Expression
    ```
 
-4. Reboot windows (seems necessary for PATH to update properly)
-
-5. Export default them to own file for later modification
+3. Export default them to own file for later modification
 
    ```powershell
    Export-PoshTheme -FilePath "~/.rewt.omp.json" -Format json
    ```
 
-6. Open file for editing
+4. Open file for editing
 
    ```powershell
    code ~\.rewt.omp.json
    ```
 
-7. Edit and make it awesome
+5. Edit and make it awesome
 
+<!-- Links and References  -->
+
+[first-post]:
+{{< ref "setting-up-git-and-ssh-in-powershell-with-posh-git.md" >}}
+
+[windows-terminal]:
+  https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701#system-requirements
 [openssh]:
   https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview
 [github-new-ssh]:
