@@ -78,24 +78,22 @@ scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/downl
 
 ## Configure Git
 
-Next up is configuring git. This includes setting my global username and email,
-creating an ssh key, adding the public key to my Github account, adding the
-private key to the ssh agent, and instructing git to use the Open SSH client
-built in to Windows 10.
+Next up is configuring git. This includes setting my global username, email, and
+default branch name, creating an ssh key, adding the public key to my Github
+account, adding the private key to the ssh agent, and instructing git to use the
+Open SSH client built in to Windows 10.
 
 For the rest of the setup I use the newly installed PowerShell Core and Windows
 Terminal for any command line instructions.
 
-### Set Global Username and Email
+### Set Global Username, Email, and Default Branch Name
 
-I run the following to set my global git username and email.
+I run the following to set my global git username, email, and preferred default
+branch name.
 
 ```powershell
 git config --global user.name "Ryan Taylor"
 git config --global user.email "myEmail@example.com"
-```
-
-```powershell
 git config --global init.defaultBranch main
 ```
 
