@@ -154,34 +154,18 @@ Core instead of Git Bash.
 Next I add my Private SSH key to the SSH Agent so I am not prompted for my
 password with each git fetch, pull, or push. In PowerShell Core...
 
-1. Set the SSH Agent startup type to automatic
+1. Configure the SSH Agent to start automatically
 
    ```powershell
    Set-Service -Name ssh-agent -StartupType Automatic
-   ```
-
-2. Start the SSH Agent
-
-   ```powershell
    Start-Service -Name ssh-agent
    ```
 
-3. Add the private ssh key to the agent
+2. Add the private ssh key to the agent and enter your password when prompted
 
    ```cmd
    ssh-add (Resolve-Path ~\.ssh\id_ed25519)
-   ```
-
-4. When prompted enter the password
-
-   ```cmd
-   Enter passphrase for C:\Users\me\.ssh\id_ed25519: [super secure password]
-   ```
-
-   The key will now be added to the agent
-
-   ```cmd
-   Identity added: C:\Users\me\.ssh\id_ed25519 (myEmail@example.com)
+   Enter passphrase for C:\Users\me\.ssh\id_ed25519: ********
    ```
 
 ### Tell Git Where to Find Open SSH
