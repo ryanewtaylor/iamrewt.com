@@ -14,10 +14,8 @@ tags:
 ---
 
 I'm currently setting up a new dev environment - and since I haven't posted
-anything to this space in **four years** - an update on how I set up my
-PowerShell prompt would be a decent re-introduction to blogging. After all,
-[Setting Up Git and SSH in PowerShell with posh-git][first-post] was my first
-blog post!
+anything to this space in ages - an update on how I set up my PowerShell prompt
+should be a decent (re)introduction to blogging.
 
 Here's a look at my finished terminal.
 
