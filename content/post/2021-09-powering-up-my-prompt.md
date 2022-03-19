@@ -198,7 +198,8 @@ ssh.exe. Once again in PowerShell Core...
 1. Create the `GIT_SSH` environment variable
 
    ```powershell
-   $env:GIT_SSH = Get-Command ssh | Select-Object -ExpandProperty Source
+   $ssh = Get-Command ssh | Select-Object -ExpandProperty Source
+   [Environment]::SetEnvironmentVariable("GIT_SSH", "$ssh", "Machine")
    ```
 
 2. Restart your terminal
