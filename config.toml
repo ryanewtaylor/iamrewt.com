@@ -223,6 +223,9 @@ canonifyurls = true
 
 # monokai is the default
 # [markup]
+#   [markup.goldmark]
+#     [markup.goldmark.renderer]
+#       unsafe = true
 #   [markup.highlight]
 #     codeFences = true
 #     guessSyntax = false
