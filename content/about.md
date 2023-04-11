@@ -1,7 +1,6 @@
 +++
 title = "About"
 date = 2023-04-10
-draft = true
 +++
 
 Hello, I'm Ryan.
